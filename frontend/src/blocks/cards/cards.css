@@ -1,0 +1,15 @@
+@import url(./__lists/cards__lists.css);
+
+.cards {
+    max-width: 882px;
+    margin: 0 auto;
+    padding-top: 47.25px;
+    justify-self: center;
+    justify-items: center;
+}
+
+@media screen and (max-width: 680px) {
+    .cards {
+        padding-top: 36px;
+    }
+} 

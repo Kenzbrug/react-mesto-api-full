@@ -1,0 +1,15 @@
+@import url(../src/vender/normalize.css);
+@import url(../src/vender/fonts/font.css);
+@import url(../src/blocks/body/body.css);
+@import url(../src/blocks/header/header.css);
+@import url(../src/blocks/profile/profile.css);
+@import url(../src/blocks/cards/cards.css);
+@import url(../src/blocks/card/card.css);
+@import url(../src/blocks/footer/footer.css);
+@import url(../src/blocks/popup/popup.css);
+@import url(../src/blocks/popup/_open/popup_open.css);
+@import url(../src/blocks/login/login.css);
+
+body {
+    background-color: #000;
+}

@@ -1,0 +1,13 @@
+.profile__avatar-img {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0);
+    width: 118px;
+    height: 118px;
+    border: none;
+    border-radius: 60px;
+    padding: 0;
+}
