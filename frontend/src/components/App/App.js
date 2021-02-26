@@ -36,7 +36,7 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [userEmail, setUserEmail] = useState(
         {
-        email: ''
+            email: ''
         })
 
     // меняем значение стета для открытия попапов
@@ -70,6 +70,7 @@ function App() {
     const handleTokenCheck = (jwt) => {
         auth.getContent(jwt)
             .then((res) => {
+                console.log(res);
                 if (res) {
                     let userEmail = {
                         email: res.data.email
@@ -87,6 +88,7 @@ function App() {
     }
 
     const handleLogin = (data) => {
+        console.log(data);
         const { password, email } = data
         return auth.authorize(password, email)
             .then((res) => {
@@ -116,10 +118,10 @@ function App() {
         const { password, email } = data
         return auth.register(password, email)
             .then((res) => {
-                if (res.error || res.message) {  
+                if (res.error || res.message) {
                     setIsInfoTooltipOpen(true)
                     setInfoTooltipStatus(false)
-                } 
+                }
                 else {
                     setIsInfoTooltipOpen(true)
                     setInfoTooltipStatus(true)
@@ -196,6 +198,7 @@ function App() {
         api
             .createCard(inputDataPlace)
             .then((item) => {
+                console.log(item);
                 const newCard = {
                     cardId: item._id,
                     cardOwner: item.owner,
@@ -267,7 +270,7 @@ function App() {
                     </Route>
 
                     <Route path='/signup'>
-                        <Register onRegister={handleRegister}/>
+                        <Register onRegister={handleRegister} />
                     </Route>
 
                     <ProtectedRoute
@@ -286,10 +289,10 @@ function App() {
                 </Switch>
                 <Footer />
 
-                <InfoTooltip 
-                isOpen={isInfoTooltipOpen}
-                onClose={closeAllPopups}
-                status={isInfoTooltipStatus} />
+                <InfoTooltip
+                    isOpen={isInfoTooltipOpen}
+                    onClose={closeAllPopups}
+                    status={isInfoTooltipStatus} />
 
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}

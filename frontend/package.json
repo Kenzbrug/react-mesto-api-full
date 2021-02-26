@@ -17,7 +17,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* keni@130.193.56.158:/home/keni/news-frontend"
+    "deploy": "npm run build && scp -r ./build/* keni@130.193.56.158:/home/keni/frontend"
   },
   "eslintConfig": {
     "extends": [

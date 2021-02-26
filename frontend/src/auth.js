@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://localhost:3001';
+export const BASE_URL = 'http://api.ken.students.nomoreparties.space';
 
 const checkresponse = (response) => response.ok ? response.json() : Promise.reject('Ошибка на сервере')
 
@@ -9,12 +9,12 @@ export const register = (password, email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({password, email})
+        body: JSON.stringify({ password, email })
     })
-    .then((res) => {
-        console.log(res);
-        return res.json()
-    })
+        .then((res) => {
+            console.log(res);
+            return res.json()
+        })
 }
 
 

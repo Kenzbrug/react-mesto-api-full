@@ -1,5 +1,5 @@
 const config = {
-    url: "http://localhost:3000",
+    url: "http://ken.students.nomoreparties.space/",
     headers: {
         // authorization: '4b89edef-9be1-402e-a5c7-910a1504eece',
         "Accept": "application/json",
