@@ -1,9 +1,9 @@
 const express = require('express');
-// require('dotenv').config();
-var cors = require('cors')
+
+const app = express();
+const cors = require('cors')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const app = express();
 const router = require('./routes')
 const errorHandler = require('./middlewares/errorHandler')
 const auth = require('./middlewares/auth');

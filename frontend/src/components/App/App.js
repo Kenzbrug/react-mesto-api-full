@@ -33,6 +33,7 @@ function App() {
     const [selectedCard, setIsSelectedCard] = useState(undefined)
     const [cards, setCards] = useState([])
     const [currentUser, setCurrentUser] = useState('')
+
     const [loggedIn, setLoggedIn] = useState(false)
     const [userEmail, setUserEmail] = useState(
         {
@@ -70,10 +71,9 @@ function App() {
     const handleTokenCheck = (jwt) => {
         auth.getContent(jwt)
             .then((res) => {
-                console.log(res);
                 if (res) {
                     let userEmail = {
-                        email: res.data.email
+                        email: res.email
                     }
                     setLoggedIn(true)
                     // обновляем стейт email'a
@@ -87,19 +87,22 @@ function App() {
             })
     }
 
+    // const [card1, setCard1] = useState()
+
     const handleLogin = (data) => {
-        console.log(data);
         const { password, email } = data
         return auth.authorize(password, email)
-            .then((res) => {
-                if (res.token) {
+            .then((data) => {
+                if (data.token) {
                     setLoggedIn(true)
-                    localStorage.setItem('jwt', res.token)
-                    history.push('/')
+                    localStorage.setItem('jwt', data.token)
+                    window.location.reload()
                     // проверяем токен для отрисовки нужного email в header
                     handleTokenCheck(localStorage.getItem('jwt'))
-                } else if (res.message || res.error) {
-                    console.log(`Ошибка: ${res.message || res.error}`);
+                    history.push('/')
+                    
+                } else if (data.message || data.error) {
+                    console.log(`Ошибка: ${data.message || data.error}`);
                 }
             })
             .catch((res) => {
@@ -114,9 +117,10 @@ function App() {
     }
 
 
-    const handleRegister = (data) => {
-        const { password, email } = data
-        return auth.register(password, email)
+    const handleRegister = (userData) => {
+        
+        // const { password, email, name, about, avatar } = data
+        return auth.register(userData)
             .then((res) => {
                 if (res.error || res.message) {
                     setIsInfoTooltipOpen(true)
@@ -129,6 +133,7 @@ function App() {
                 }
             })
             .catch((res) => {
+                console.log(res);
                 console.log(`Ошибка: ${res.status} - ${res.statusText}`)
             })
     }
@@ -160,7 +165,7 @@ function App() {
 
     function handleCardLike(card) {
         // Снова проверяем, есть ли уже лайк на этой карточке
-        const isLiked = card.likes.some(user => user._id === currentUser._id);
+        const isLiked = card.likes.some(usersIdid => usersIdid === currentUser._id);
 
         // // Отправляем запрос в API и получаем обновлённые данные карточки
         api
@@ -198,7 +203,6 @@ function App() {
         api
             .createCard(inputDataPlace)
             .then((item) => {
-                console.log(item);
                 const newCard = {
                     cardId: item._id,
                     cardOwner: item.owner,

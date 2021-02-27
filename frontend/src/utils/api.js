@@ -1,9 +1,10 @@
 const config = {
-    url: "http://ken.students.nomoreparties.space/",
+    url: "http://localhost:3000/",
     headers: {
         // authorization: '4b89edef-9be1-402e-a5c7-910a1504eece',
-        "Accept": "application/json",
+        // "Accept": "application/json",
         "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem('jwt')}`
     }
 }
 
@@ -54,7 +55,8 @@ class Api {
     getProfileInfo() {
         return fetch(`${this._url}users/me`, {
             headers: this._headers,
-        }).then(handleResponse)
+        })
+        .then(handleResponse)
     }
 
     //удаляем карточку
@@ -69,7 +71,7 @@ class Api {
     //запрос на удаление/добавление лайка
     changeLikeCardStatus(cardId, LikeState) {
         const method = LikeState ? "PUT" : "DELETE"
-        return fetch(`${this._url}cards/likes/${cardId}`, {
+        return fetch(`${this._url}cards/${cardId}/likes`, {
             method,
             headers: this._headers,
         })

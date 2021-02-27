@@ -4,9 +4,9 @@ import CurrentUserContext from '../../contexts/CurrentUserContext'
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     const currentUser = useContext(CurrentUserContext)
     //проверка создателя карточки
-    const isOwn = card.cardOwner._id === currentUser._id;
+    const isOwn = card.cardOwner === currentUser._id;
     //проверяем лакнули ли мы карточку
-    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    const isLiked = card.likes.some((user) => user === currentUser._id);
     //в зависимости владельца карточки добавляем/убираем отображение иконки "удалить"
     const cardDeleteButtonClassName = (
         `card__button-delete ${isOwn ? 'card__button-delete_hidden' : 'card__button-delete_invisible'}`

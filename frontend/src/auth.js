@@ -1,20 +1,17 @@
-export const BASE_URL = 'http://api.ken.students.nomoreparties.space';
+export const BASE_URL = 'http://localhost:3000';
 
-const checkresponse = (response) => response.ok ? response.json() : Promise.reject('Ошибка на сервере')
+const checkresponse = (response) => response.ok ? response.json() : Promise.reject('Неверно введены данные')
 
-export const register = (password, email) => {
+export const register = (userData) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, email })
+        body: JSON.stringify(userData)
     })
-        .then((res) => {
-            console.log(res);
-            return res.json()
-        })
+    .then(checkresponse)
 }
 
 
@@ -27,9 +24,7 @@ export const authorize = (password, email) => {
         },
         body: JSON.stringify({ password, email })
     })
-        .then((res) => {
-            return res.json()
-        })
+    .then(checkresponse)
 }
 
 export const getContent = (token) => {

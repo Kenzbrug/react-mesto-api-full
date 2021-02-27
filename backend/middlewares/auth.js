@@ -5,9 +5,6 @@ const {Forbidden} = require('../errors')
 
 const handleAuthError = (res) => {
   throw new Forbidden('Необходима авторизация')
-  // res
-  //   .status(401)
-  //   .send({ message: 'Необходима авторизация' });
 }
 
 const auth = (req, res, next) => {

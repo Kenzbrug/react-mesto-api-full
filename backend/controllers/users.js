@@ -13,9 +13,8 @@ const getUsers = (req, res) => {
 
 // ищем пользователя
 const getUser = (req, res, next) => {
-  User.findById(req.params._id)
+  User.findById(req.user._id)
     .then((user) => {
-
       // обрабатываем ошибку, если пользователь не найден с указанным id
       if (!user) {
         throw new NotFound('Нет пользователя с таким id')
@@ -37,7 +36,7 @@ const createUser = (req, res, next) => {
       if (user) {
         throw new Conflict('Почта уже используется')
       }
-      bcrypt.hash(password, 12)
+      bcrypt.hash(password, 10)
         .then(hash => User.create({
           email: req.body.email,
           password: hash,
@@ -45,27 +44,21 @@ const createUser = (req, res, next) => {
           about: about,
           avatar: avatar
           }))
-
           .then(({_id, email}) => {
             res.send({_id, email})
           })
           .catch((err) => {
-        // проверка на валидность введенных данных
-          if (err.name === "ValidationError") {
-            return res.status(400).send({ message: "При создании нового пользователя переданы некорректные данные" })
-          }
-          return res.status(400).send({ message: err.message, name: 'priver2' })
+            return res.status(400).send({ message: err.message })
         })
     })
     .catch(next)
 
 }
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body
   User.findOne({email}).select('+password')
     .then((user) => {
       if (!user) {
-
         throw new Unauthorized('Неприравильный логин или пароль')
       }
       return bcrypt.compare(password, user.password)
@@ -76,18 +69,15 @@ const login = (req, res) => {
           throw new Unauthorized('Неприравильный логин или пароль')
         })
     })
-  // return User.findUserByCredentials(email, password)
     .then(({_id}) => {
       const token = jwt.sign({ _id }, JWT_SECRET, { expiresIn: JWT_TTL })
       res.send({ token })
     })
-    .catch((err) => {
-      res.status(401).send({ message: err.message, message2: 'privvvert' })
-    })
+    .catch(next)
 }
 
 // обновляем данные пользователя
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, about } = req.body
   User.findByIdAndUpdate(req.user._id, { name, about }, {
     new: true, // then получит на вход обнавленные данные
@@ -98,20 +88,12 @@ const updateUser = (req, res) => {
       if (user) {
         return res.status(200).send(user)
       }
-      return res.status(404).send({ message: "Пользователь не найден" })
+      throw new NotFound('Пользователь не найден')
     })
-    .catch((err) => {
-      // проверка на валидность введенных данных
-      if (err.name === "CastError") {
-        return res.status(400).send({ message: "Ошибка в обноружении профиля пользователя при обновлении профиля" })
-      } else if (err.name === "ValidationError") {
-        return res.status(400).send({ message: "Переданы некорректные данные при обновлении профиля пользователя" })
-      }
-      return res.status(500).send({ message: err.message })
-    })
+    .catch(next)
 }
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body
   User.findByIdAndUpdate(req.user._id, { avatar }, {
     new: true,
@@ -119,20 +101,15 @@ const updateAvatar = (req, res) => {
     upsert: true
   })
     .then((user) => {
-      if (user) {
-        return res.status(200).send(user)
+      console.log(user);
+      if (!user) {
+        // return res.status(200).send(user)
+        throw new NotFound('Пользователь не найден')
       }
-      return res.status(404).send({ message: "Пользователь не найдена" })
+      // throw new NotFound('Пользователь не найден')
+      return res.status(200).send(user)
     })
-    .catch((err) => {
-      // проверка на валидность введенных данных
-      if (err.name === "CastError") {
-        return res.status(400).send({ message: "Ошибка в обноружении профиля пользователя при обновлении аватарки" })
-      } else if (err.name === "ValidationError") {
-        return res.status(400).send({ message: "Переданы некорректные данные при обновлении аватарки" })
-      }
-      return res.status(500).send({ message: err.message })
-    })
+    .catch(next)
 }
 
 module.exports = {
