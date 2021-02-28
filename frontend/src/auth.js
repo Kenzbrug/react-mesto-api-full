@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://api.mestoken.students.nomoredomains.icu';
+export const BASE_URL = 'https://api.mestoken.students.nomoredomains.icu';
 
 const checkresponse = (response) => response.ok ? response.json() : Promise.reject('Неверно введены данные')
 

@@ -1,5 +1,5 @@
 const config = {
-    url: "http://api.mestoken.students.nomoredomains.icu/",
+    url: "https://api.mestoken.students.nomoredomains.icu/",
 
     headers: {
         "Content-Type": "application/json",
