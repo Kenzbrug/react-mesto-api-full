@@ -4,7 +4,7 @@ const validator = require('validator')
 
 const register = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).message({
+    name: Joi.string().required().min(2).max(30).message({
       'string.min' : 'Минимум 2 символа',
       'string.max' : 'Максимум 30 символов'
     }),

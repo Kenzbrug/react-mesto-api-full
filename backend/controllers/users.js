@@ -101,12 +101,9 @@ const updateAvatar = (req, res, next) => {
     upsert: true
   })
     .then((user) => {
-      console.log(user);
       if (!user) {
-        // return res.status(200).send(user)
         throw new NotFound('Пользователь не найден')
       }
-      // throw new NotFound('Пользователь не найден')
       return res.status(200).send(user)
     })
     .catch(next)

@@ -87,8 +87,6 @@ function App() {
             })
     }
 
-    // const [card1, setCard1] = useState()
-
     const handleLogin = (data) => {
         const { password, email } = data
         return auth.authorize(password, email)
@@ -118,9 +116,8 @@ function App() {
 
 
     const handleRegister = (userData) => {
-        
-        // const { password, email, name, about, avatar } = data
-        return auth.register(userData)
+        const { password, email } = userData
+        return auth.register(password, email)
             .then((res) => {
                 if (res.error || res.message) {
                     setIsInfoTooltipOpen(true)
@@ -133,7 +130,6 @@ function App() {
                 }
             })
             .catch((res) => {
-                console.log(res);
                 console.log(`Ошибка: ${res.status} - ${res.statusText}`)
             })
     }

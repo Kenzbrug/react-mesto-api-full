@@ -1,8 +1,7 @@
 const config = {
-    url: "http://localhost:3000/",
+    url: "http://api.mestoken.students.nomoredomains.icu/",
+
     headers: {
-        // authorization: '4b89edef-9be1-402e-a5c7-910a1504eece',
-        // "Accept": "application/json",
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem('jwt')}`
     }
@@ -23,7 +22,6 @@ class Api {
     }
     //запрос на отрисовку карточек 
     getCardList() {
-        // return fetch(`${this._url}${this._cohort}cards`, {
         return fetch(`${this._url}cards`, {
             headers: this._headers
         }).then(handleResponse)
