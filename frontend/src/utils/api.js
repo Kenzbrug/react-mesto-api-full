@@ -1,7 +1,10 @@
+import {BadRequest} from './errors/BadRequest'
+
 const config = {
     url: "https://api.mestoken.students.nomoredomains.icu/",
 
     headers: {
+        'Accept': 'application/json',
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem('jwt')}`
     }
@@ -35,8 +38,15 @@ class Api {
                 name: data.name,
                 link: data.link,
             })
-        }).then(handleResponse)
+        })
+        .then((res) => {
+            if (!res.ok) {
+                throw new BadRequest('BadRequest');
+            } 
+            return res.json()
+        })
     }
+
     //запрос на изменение данных профайла
     setUserInfo(inputData) {
         return fetch(`${this._url}users/me`, {
@@ -46,7 +56,14 @@ class Api {
                 name: inputData.name,
                 about: inputData.about
             })
-        }).then(handleResponse)
+        })
+        // .then(handleResponse)
+        .then((res) => {
+            if (!res.ok) {
+                throw new BadRequest('BadRequest');
+            } 
+            return res.json()
+        })
     }
 
     //забираем данные профайла с сервера
@@ -85,7 +102,13 @@ class Api {
                 avatar: inputData.avatar,
             })
         })
-            .then(handleResponse)
+        // .then(handleResponse)
+        .then((res) => {
+            if (!res.ok) {
+                throw new BadRequest('BadRequest');
+            } 
+            return res.json()
+        })
     }
 }
 

@@ -1,11 +1,10 @@
-class Conflict extends Error{
+class Conflict extends Error {
   constructor(message) {
-    super()
+    super();
 
     this.message = message;
     this.status = 409;
   }
 }
 
-
-module.exports = Conflict
+module.exports = Conflict;

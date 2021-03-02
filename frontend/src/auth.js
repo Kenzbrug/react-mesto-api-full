@@ -36,5 +36,7 @@ export const getContent = (token) => {
             'Authorization': `Bearer ${token}`,
         }
     })
-        .then(checkresponse)
+        .then((res) => {
+            return res.ok ? res.json() : Promise.reject('Неверно введены данные')
+        })
 }

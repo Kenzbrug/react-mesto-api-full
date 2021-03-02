@@ -1,14 +1,15 @@
 const router = require('express').Router();
-const userRoutes = require('./users')
-const cardRoutes = require('./cards')
+const userRoutes = require('./users');
+const cardRoutes = require('./cards');
+const { NotFound } = require('../errors');
 
-router.use('/users', userRoutes)
-router.use('/cards', cardRoutes)
+router.use('/users', userRoutes);
+router.use('/cards', cardRoutes);
 
 // обработка ошибки при некорректном вводе адреса
-router.use('*', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' })
-})
+/* eslint-disable no-unused-vars */
+router.use('*', (req, res) => { // res, req
+  throw new NotFound('Запрашиваемый ресурс не найден');
+});
 
-
-module.exports = router
+module.exports = router;

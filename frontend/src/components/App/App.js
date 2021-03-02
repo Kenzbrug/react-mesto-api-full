@@ -117,6 +117,7 @@ function App() {
 
     const handleRegister = (userData) => {
         const { password, email } = userData
+
         return auth.register(password, email)
             .then((res) => {
                 if (res.error || res.message) {
@@ -143,7 +144,7 @@ function App() {
                 setCurrentUser(saveProfileData)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                console.log(`Ошибка: ${res.status} - ${res.message}`);
             })
     }
     // обновляем аватар профайла
@@ -155,7 +156,7 @@ function App() {
                 setCurrentUser(saveAvatarData)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                console.log(`Ошибка: ${res.status} - ${res.message}`);
             })
     }
 
@@ -208,8 +209,8 @@ function App() {
                 }
                 setCards([newCard, ...cards])
             })
-            .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+            .catch((res) => {;
+                console.log(`Ошибка: ${res.status} - ${res.message}`);
             })
     }
     // запрос на отрисовку карточек
