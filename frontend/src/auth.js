@@ -1,17 +1,22 @@
+import {BadRequest} from './utils/errors/BadRequest'
+
 export const BASE_URL = 'https://api.mestoken.students.nomoredomains.icu';
+
 
 const checkresponse = (response) => response.ok ? response.json() : Promise.reject('Неверно введены данные')
 
-export const register = (password, email) => {
+export const register = (userData) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({password, email})
+        body: JSON.stringify(userData)
     })
-    .then(checkresponse)
+    .then((res) => {
+        return res.ok ? res.json() : new BadRequest('Неверно введены данные')
+    })
 }
 
 

@@ -22,9 +22,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             name,
             about: description
         });
+        
     }
     //заполняем попап профиля данными с сервера 
     useEffect(() => {
+        
         setName(currentUser.name)
         setDescription(currentUser.about)
     }, [currentUser])

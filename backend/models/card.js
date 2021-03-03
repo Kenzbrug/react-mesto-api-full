@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const isUrl = require('validator/lib/isURL');
 
 const cardSchema = mongoose.Schema({
   name: {
@@ -8,7 +9,7 @@ const cardSchema = mongoose.Schema({
     maxlength: 30,
     validate: {
       validator(v) {
-        const regex = /^[a-zа-яё0-9-:;.,\s]{2,30}$/i;
+        const regex = /^.{2,30}$/i;
         return regex.test(v);
       },
     },
@@ -17,13 +18,8 @@ const cardSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator(v) {
-        /* eslint-disable no-useless-escape */
-        const regex = /^(https?\:\/\/)(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+\.[a-z]{2,6}([a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+)?(#?)$/i;
-        /* eslint-enable no-useless-escape */
-        return regex.test(v);
-      },
-      message: 'URL веден неверно',
+      validator: (v) => isUrl(v),
+      message: 'Неправильный формат почты',
     },
   },
   owner: {

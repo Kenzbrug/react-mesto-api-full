@@ -12,8 +12,8 @@ const profileEdit = celebrate({
       .messages({
         'string.min': 'Минимум 2 символа',
         'string.max': 'Максимум 30 символов',
-      })
-  })
-})
+      }),
+  }),
+});
 
 module.exports = { profileEdit };

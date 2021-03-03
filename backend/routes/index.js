@@ -1,10 +1,14 @@
 const router = require('express').Router();
+const bodyParser = require('body-parser');
 const userRoutes = require('./users');
 const cardRoutes = require('./cards');
+const auth = require('../middlewares/auth');
 const { NotFound } = require('../errors');
 
-router.use('/users', userRoutes);
-router.use('/cards', cardRoutes);
+const jsonParser = bodyParser.json();
+
+router.use('/users', jsonParser, auth, userRoutes);
+router.use('/cards', jsonParser, auth, cardRoutes);
 
 // обработка ошибки при некорректном вводе адреса
 /* eslint-disable no-unused-vars */

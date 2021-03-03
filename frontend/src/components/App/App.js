@@ -39,7 +39,6 @@ function App() {
         {
             email: ''
         })
-
     // меняем значение стета для открытия попапов
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -80,15 +79,16 @@ function App() {
                     setUserEmail(userEmail)
                     // при удачной проверке перебрасываем на главную страницу
                     history.push('/')
+                    setCurrentUser(res)
                 }
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`)
+                return new Error('Ошибка введенных данных')
             })
     }
 
-    const handleLogin = (data) => {
-        const { password, email } = data
+    const handleLogin = (dataInput) => {
+        const { password, email } = dataInput
         return auth.authorize(password, email)
             .then((data) => {
                 if (data.token) {
@@ -98,13 +98,14 @@ function App() {
                     // проверяем токен для отрисовки нужного email в header
                     handleTokenCheck(localStorage.getItem('jwt'))
                     history.push('/')
+
                     
                 } else if (data.message || data.error) {
-                    console.log(`Ошибка: ${data.message || data.error}`);
+                    return new Error('Ошибка введенных данных')
                 }
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`)
+                return new Error('Ошибка введенных данных')
             })
     }
 
@@ -131,7 +132,7 @@ function App() {
                 }
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`)
+                return new Error('Ошибка введенных данных')
             })
     }
 
@@ -144,7 +145,7 @@ function App() {
                 setCurrentUser(saveProfileData)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.message}`);
+                return new Error('Ошибка введенных данных')
             })
     }
     // обновляем аватар профайла
@@ -156,7 +157,7 @@ function App() {
                 setCurrentUser(saveAvatarData)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.message}`);
+                return new Error('Ошибка введенных данных')
             })
     }
 
@@ -181,7 +182,7 @@ function App() {
                 setCards(newCards);
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                return new Error('Ошибка введенных данных')
             })
     }
     function handleCardDelete(card) {
@@ -191,7 +192,7 @@ function App() {
                 setCards(newCards);
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                return new Error('Ошибка введенных данных')
             })
     }
 
@@ -209,8 +210,8 @@ function App() {
                 }
                 setCards([newCard, ...cards])
             })
-            .catch((res) => {;
-                console.log(`Ошибка: ${res.status} - ${res.message}`);
+            .catch((res) => {
+                return new Error('Ошибка введенных данных')
             })
     }
     // запрос на отрисовку карточек
@@ -230,7 +231,7 @@ function App() {
                 setCards(card)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                return new Error('Ошибка введенных данных')
             })
     }, [])
 
@@ -242,7 +243,7 @@ function App() {
                 setCurrentUser(profileInfo)
             })
             .catch((res) => {
-                console.log(`Ошибка: ${res.status} - ${res.statusText}`);
+                return new Error('Ошибка введенных данных')
             })
     }, [])
 
@@ -252,6 +253,7 @@ function App() {
         if (jwt) {
             handleTokenCheck(jwt)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // проверяем залогинены мы или нет, чтобы перенаправить на главную страницу
@@ -259,6 +261,7 @@ function App() {
         if (loggedIn) {
             history.push('/')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loggedIn])
 
     return (

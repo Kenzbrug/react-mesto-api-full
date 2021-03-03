@@ -26,13 +26,17 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findById(req.params.id)
     .then((card) => {
-      const stringCard = JSON.stringify(card);
-      const objectCard = JSON.parse(stringCard);
-      if (objectCard.owner !== req.user._id) {
-        throw new Forbidden('Вы не можете удалить чужую карточку');
+      if (card === null) {
+        throw new NotFound('карточка ненайдена');
       } else {
-        Card.findByIdAndDelete(objectCard._id)
-          .then((data) => data);
+        const stringCard = JSON.stringify(card);
+        const objectCard = JSON.parse(stringCard);
+        if (objectCard.owner !== req.user._id) {
+          throw new Forbidden('Вы не можете удалить чужую карточку');
+        } else {
+          Card.findByIdAndDelete(objectCard._id)
+            .then((data) => data);
+        }
       }
       res.status(200).send(card);
     })

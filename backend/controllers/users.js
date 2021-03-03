@@ -69,8 +69,7 @@ const createUser = (req, res, next) => {
         .then(({ _id, email }) => {
         /* eslint-enable no-shadow */
           res.send({ _id, email });
-        })
-        .catch((err) => res.status(400).send({ message: err.message }));
+        });
     })
     .catch(next);
 };

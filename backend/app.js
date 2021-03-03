@@ -4,9 +4,12 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
+const jsonParser = bodyParser.json();
 const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
-const auth = require('./middlewares/auth');
+
+// const auth = require('./middlewares/auth');
 const { login, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -26,7 +29,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 /* eslint-disable no-console */
 mongoose.connection.on('open', () => console.log('DB connected!'));
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 // подключаем логгер запросов(до обработчиков)
@@ -40,11 +43,11 @@ app.get('/crash-test', () => {
 
 // роуты /signin и /signup по заданию должны находится в app.js
 // роуты, не требующие авторизации, размещаем выше app.use(auth);
-app.post('/signin', registerValidator.register, login);
-app.post('/signup', registerValidator.register, createUser);
+app.post('/signin', jsonParser, registerValidator.register, login);
+app.post('/signup', jsonParser, registerValidator.register, createUser);
 
 // роуты, требующие авторизации, размещаем ниже app.use(auth);
-app.use(auth);
+// app.use(auth);
 
 // роуты, требующие авторизации
 app.use('/', router);

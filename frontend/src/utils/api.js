@@ -1,7 +1,5 @@
-import {BadRequest} from './errors/BadRequest'
-
 const config = {
-    url: "https://api.mestoken.students.nomoredomains.icu/",
+    url: "https://api.mestoken.students.nomoredomains.icu",
 
     headers: {
         'Accept': 'application/json',
@@ -12,8 +10,8 @@ const config = {
 
 const handleResponse = (res) => {
     if (!res.ok) {
-        console.log(`Ошибка: ${res.status} - ${res.statusText}`);
-    }
+        throw new Error('Данные введены неверно')
+    } 
     return res.json()
 }
 
@@ -25,13 +23,13 @@ class Api {
     }
     //запрос на отрисовку карточек 
     getCardList() {
-        return fetch(`${this._url}cards`, {
+        return fetch(`${this._url}/cards`, {
             headers: this._headers
         }).then(handleResponse)
     }
     //запрос на создание новой карточки
     createCard(data) {
-        return fetch(`${this._url}cards`, {
+        return fetch(`${this._url}/cards`, {
             method: "POST",
             headers: this._headers,
             body: JSON.stringify({
@@ -41,7 +39,7 @@ class Api {
         })
         .then((res) => {
             if (!res.ok) {
-                throw new BadRequest('BadRequest');
+                throw new Error('Данные введены неверно')
             } 
             return res.json()
         })
@@ -49,7 +47,7 @@ class Api {
 
     //запрос на изменение данных профайла
     setUserInfo(inputData) {
-        return fetch(`${this._url}users/me`, {
+        return fetch(`${this._url}/users/me`, {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
@@ -60,7 +58,7 @@ class Api {
         // .then(handleResponse)
         .then((res) => {
             if (!res.ok) {
-                throw new BadRequest('BadRequest');
+                throw new Error('Данные введены неверно')
             } 
             return res.json()
         })
@@ -68,7 +66,7 @@ class Api {
 
     //забираем данные профайла с сервера
     getProfileInfo() {
-        return fetch(`${this._url}users/me`, {
+        return fetch(`${this._url}/users/me`, {
             headers: this._headers,
         })
         .then(handleResponse)
@@ -76,7 +74,7 @@ class Api {
 
     //удаляем карточку
     setCardDelete(cardId) {
-        return fetch(`${this._url}cards/${cardId}`, {
+        return fetch(`${this._url}/cards/${cardId}`, {
             method: "DELETE",
             headers: this._headers,
         })
@@ -86,7 +84,7 @@ class Api {
     //запрос на удаление/добавление лайка
     changeLikeCardStatus(cardId, LikeState) {
         const method = LikeState ? "PUT" : "DELETE"
-        return fetch(`${this._url}cards/${cardId}/likes`, {
+        return fetch(`${this._url}/cards/${cardId}/likes`, {
             method,
             headers: this._headers,
         })
@@ -95,7 +93,7 @@ class Api {
 
     //редактирвоание аватара
     setUserAvatar(inputData) {
-        return fetch(`${this._url}users/me/avatar`, {
+        return fetch(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
@@ -105,7 +103,7 @@ class Api {
         // .then(handleResponse)
         .then((res) => {
             if (!res.ok) {
-                throw new BadRequest('BadRequest');
+                throw new Error('Данные введены неверно')
             } 
             return res.json()
         })

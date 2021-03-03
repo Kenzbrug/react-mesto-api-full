@@ -1,18 +1,16 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
+const { BadRequest } = require('../../errors');
 
 const avatarEdit = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().custom((value, helper) => {
+    avatar: Joi.string().custom((value) => {
       if (validator.isURL(value)) {
         return value;
       }
-      return helper.messages('Неверно введен адрес ссылки');
-    })
-      .messages({
-        'any.required': 'Обязательно для заполенния',
-      }),
-  })
-})
+      throw new BadRequest('Ошибка валидации аватарки');
+    }),
+  }),
+});
 
 module.exports = { avatarEdit };
